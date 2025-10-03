@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GATE Formula Hub</title>
+   <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{
+    font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: #fff;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      margin: 0 0 15px 0;
+      font-size: 2.8rem;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    #searchBox {
+      width: 80%;
+      max-width: 600px;
+      padding: 12px 15px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      font-size: 1.1rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #searchBox:focus {
+      transform: scale(1.02);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin: 15px 0;
+    }
+
+    nav button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: #555;
+      color: white;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: 0.3s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    nav button:hover {
+      background: #ff0059;
+      transform: translateY(-2px);
+    }
+
+    nav button.active {
+      background: #7700ff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .formula-card {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .formula-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .formula-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .formula-card pre {
+      background: #f0f4f8;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 1rem;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #2575fc;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    footer {
+      text-align: center;
+      margin: 25px 0;
+      font-size: 15px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    /* Motivation Section */
+    .motivation {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1581093588401-59ff0f9c2c92?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 100px 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    }
+
+    .motivation h2 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+
+    .motivation p {
+      font-size: 1.4rem;
+      line-height: 1.8;
+      text-shadow: 1.5px 1.5px 4px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GATE Formula Hub</h1>
+  <input type="text" id="searchBox" placeholder="Search formulas..." onkeyup="searchFormulas()">
+</header>
+
+<nav id="navButtons"></nav>
+
+<div class="container" id="formulaContainer"></div>
+
+<footer>Made with ♥ for GATE preparation</footer>
+
+<script>
+  const pages = [
+    { id: "home", title: "Home" },
+    { id: "quant", title: "Quantitative Aptitude" },
+    { id: "math", title: "Engineering Math" },
+    { id: "ai", title: "AI Algorithms" },
+    { id: "ml", title: "ML Algorithms" },
+    { id: "dsa", title: "DSA" },
+    { id: "dbms", title: "DBMS" },
+    { id: "ds", title: "Data Science" },
+    { id: "resources", title: "Resources" },
+    { id: "about", title: "About" }
+  ];
+  const formulas = {
+   quant: [
+      { 
+        title: "Arithmetic", 
+        formula: `<table>
+          <tr><th>Topic</th><th>Formula / Details</th></tr>
+          <tr><td>Percentage</td><td>Percentage = (Part / Whole) * 100</td></tr>
+          <tr><td>Profit</td><td>Profit = Selling Price - Cost Price</td></tr>
+          <tr><td>Loss</td><td>Loss = Cost Price - Selling Price</td></tr>
+          <tr><td>Profit %</td><td>Profit % = (Profit / Cost Price) * 100</td></tr>
+          <tr><td>Loss %</td><td>Loss % = (Loss / Cost Price) * 100</td></tr>
+          <tr><td>Simple Interest</td><td>SI = (P * R * T) / 100</td></tr>
+          <tr><td>Compound Interest</td><td>CI = P * (1 + R / 100)<sup>T</sup></td></tr>
+          <tr><td>Average</td><td>Average = Sum of terms / Number of terms</td></tr>
+          <tr><td>Ratio</td><td>a : b</td></tr>
+          <tr><td>Proportion</td><td>a / b = c / d</td></tr>
+        </table>` 
+      },
+      { 
+        title: "Algebra", 
+        formula: `<table>
+          <tr><th>Topic</th><th>Formula / Details</th></tr>
+          <tr><td>Quadratic Equation</td><td>ax<sup>2</sup> + bx + c = 0</td></tr>
+          <tr><td>Roots</td><td>x = [-b &plusmn; √(b<sup>2</sup> − 4ac)] / 2a</td></tr>
+          <tr><td>Sum of roots</td><td>x<sub>1</sub> + x<sub>2</sub> = -b / a</td></tr>
+          <tr><td>Product of roots</td><td>x<sub>1</sub> * x<sub>2</sub> = c / a</td></tr>
+          <tr><td>AP (Arithmetic Progression)</td><td>n-th term: a<sub>n</sub> = a + (n-1)d, Sum: S<sub>n</sub> = n/2 [2a + (n-1)d]</td></tr>
+          <tr><td>GP (Geometric Progression)</td><td>n-th term: a<sub>n</sub> = a * r<sup>n-1</sup>, Sum: S<sub>n</sub> = a(1-r<sup>n</sup>)/(1-r), r ≠ 1</td></tr>
+        </table>` 
+      },
+      { 
+        title: "Geometry & Mensuration", 
+        formula: `<table>
+          <tr><th>Topic</th><th>Formula / Details</th></tr>
+          <tr><td>Triangle Area</td><td>Heron's Formula: s = (a+b+c)/2, Area = √[s(s-a)(s-b)(s-c)]</td></tr>
+          <tr><td>Circle</td><td>Circumference = 2&pi;r, Area = &pi;r<sup>2</sup></td></tr>
+          <tr><td>Rectangle</td><td>Area = l * b, Perimeter = 2(l+b)</td></tr>
+          <tr><td>Square</td><td>Area = a<sup>2</sup>, Perimeter = 4a</td></tr>
+          <tr><td>Volume of Solids</td><td>Cube: V = a<sup>3</sup>, Cuboid: V = l * b * h, Sphere: V = 4/3 &pi; r<sup>3</sup>, Cylinder: V = &pi; r<sup>2</sup> h</td></tr>
+        </table>` 
+      },
+      { 
+        title: "Trigonometry", 
+        formula: `<table>
+          <tr><th>Topic</th><th>Formula / Details</th></tr>
+          <tr><td>Basic Ratios</td><td>sin&theta; = opposite/hypotenuse, cos&theta; = adjacent/hypotenuse, tan&theta; = opposite/adjacent</td></tr>
+          <tr><td>Identities</td><td>sin<sup>2</sup>&theta; + cos<sup>2</sup>&theta; = 1, 1 + tan<sup>2</sup>&theta; = sec<sup>2</sup>&theta;, 1 + cot<sup>2</sup>&theta; = csc<sup>2</sup>&theta;</td></tr>
+          <tr><td>Height & Distance</td><td>h = d * tan&theta; (opposite side formula)</td></tr>
+        </table>` 
+      },
+      { 
+        title: "Probability & Statistics", 
+        formula: `<table>
+          <tr><th>Topic</th><th>Formula / Details</th></tr>
+          <tr><td>Probability</td><td>P(E) = Number of favorable outcomes / Total outcomes</td></tr>
+          <tr><td>Permutation</td><td>nPr = n! / (n-r)!</td></tr>
+          <tr><td>Combination</td><td>nCr = n! / [r!(n-r)!]</td></tr>
+          <tr><td>Mean</td><td>Mean = Sum of terms / n</td></tr>
+          <tr><td>Median</td><td>Middle value (or average of two middle values)</td></tr>
+          <tr><td>Mode</td><td>Value occurring most frequently</td></tr>
+        </table>` 
+      }
+    ],
+
+    math: [
+      { 
+        title: "Linear Algebra", 
+        formula: `<b>Matrix Operations:</b> Addition, Multiplication, Transpose A^T, Inverse A^-1<br>
+        <b>Determinant:</b> det(A) = Σ(-1)^(i+j) a_ij M_ij<br>
+        <b>Rank:</b> Maximum number of linearly independent rows/columns<br>
+        <b>Eigenvalues / Eigenvectors:</b> Av = λv<br>
+        <b>Characteristic Equation:</b> det(A - λI) = 0<br>
+        <b>Important Formulas:</b><br>
+        (AB)^T = B^T A^T, (A^-1)^T = (A^T)^-1, Trace(A) = Σa_ii`
+      },
+      {
+        title: "Calculus",
+        formula: `<b>Differential Calculus:</b> dy/dx, Chain Rule: dy/dx = dy/du * du/dx, Maxima/Minima: dy/dx=0<br>
+        Taylor Series: f(x) = f(a) + f'(a)(x-a) + f''(a)/2!(x-a)^2 + ...<br>
+        <b>Integral Calculus:</b> Definite ∫_a^b f(x)dx, Indefinite ∫f(x)dx = F(x) + C, Methods: Substitution, Integration by Parts: ∫u dv = uv - ∫v du`
+      },
+      {
+        title: "Differential Equations",
+        formula: `1st Order: dy/dx + P(x)y = Q(x), Integrating Factor I.F = e^∫P(x)dx<br>
+        2nd Order (Linear): ay'' + by' + cy = f(x), Solution = Homogeneous + Particular<br>
+        Laplace Transform: L{f(t)} = ∫_0^∞ e^(-st) f(t) dt`
+      },
+      {
+        title: "Probability & Statistics",
+        formula: `P(A∪B) = P(A)+P(B)-P(A∩B)<br>
+        Conditional Probability: P(A|B)=P(A∩B)/P(B)<br>
+        Bayes Theorem: P(A|B)=P(B|A)P(A)/P(B)<br>
+        Mean μ=E[X]=Σx_i P(x_i), Variance σ²=E[(X-μ)²]<br>
+        Common Distributions: Binomial, Poisson, Normal`
+      },
+      {
+        title: "Complex Variables",
+        formula: `z = x + iy, i² = -1<br>
+        Modulus: |z| = √(x²+y²)<br>
+        Euler’s Formula: e^(iθ) = cosθ + i sinθ<br>
+        De Moivre’s Theorem: (cosθ + i sinθ)^n = cos(nθ) + i sin(nθ)`
+      },
+      {
+        title: "Numerical Methods",
+        formula: `Solution of Equations: Bisection, Newton-Raphson<br>
+        Interpolation: Lagrange, Newton’s forward/backward<br>
+        Numerical Integration: Trapezoidal, Simpson’s 1/3 Rule`
+      },
+      {
+        title: "Transform Techniques",
+        formula: `Fourier Series: f(x) = a0 + Σ(an cos nx + bn sin nx)<br>
+        Fourier Transform: F(ω) = ∫_(-∞)^∞ f(t) e^(-iωt) dt<br>
+        Laplace Transform: see Differential Equations`
+      },
+      {
+        title: "Vector Calculus",
+        formula: `Gradient: ∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z)<br>
+        Divergence: ∇⋅F = ∂P/∂x + ∂Q/∂y + ∂R/∂z<br>
+        Curl: ∇×F = (∂R/∂y - ∂Q/∂z, ...)`
+      },
+      {
+        title: "ML/AI Related Linear Algebra",
+        formula: `Covariance Matrix: Cov(X,Y)=E[(X-μ_X)(Y-μ_Y)]<br>
+        Eigenvalues/Eigenvectors → PCA<br>
+        Determinant & Rank → Solving linear systems`
+      },
+      {
+        title: "GATE Tips",
+        formula: `Focus on Linear Algebra, Calculus (ODEs + Integrals), Probability & Statistics, Numerical Methods.<br>
+        Know formulas + basic solution techniques; GATE often asks conceptual or quick calculation questions.`
+      }
+    ],
+    ai: [
+      { title: "A* Search", formula: "f(n) = g(n) + h(n)" }
+    ],
+    ml: [
+      { title: "Linear Regression", formula: "w = (X^T X)^-1 X^T y" }
+    ],
+    dsa: [
+      { title: "Time Complexity Table", formula: `<table>
+        <tr><th>Algorithm</th><th>Worst Case</th><th>Average Case</th><th>Notes</th></tr>
+        <tr><td>Linear Search</td><td>O(n)</td><td>O(n)</td><td>Simple search</td></tr>
+        <tr><td>Binary Search</td><td>O(log n)</td><td>O(log n)</td><td>Sorted array only</td></tr>
+        <tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>Divide & conquer</td></tr>
+      </table>` }
+    ],
+
+    ai: [
+     { title: "Breadth-First Search (BFS)", formula: `
+      Explores nodes level by level.<br>
+      Time Complexity: O(b^d), Space Complexity: O(b^d)<br>
+      (b = branching factor, d = depth)
+    `},
+    { title: "Depth-First Search (DFS)", formula: `
+      Explores as deep as possible before backtracking.<br>
+      Time Complexity: O(b^m), Space Complexity: O(b*m)
+    `},
+    { title: "Uniform-Cost Search (Dijkstra)", formula: `
+      Expands node with lowest path cost g(n).<br>
+      g(n) = ∑ c(n_i, n_{i+1})
+    `},
+    { title: "Greedy Best-First Search", formula: `
+      Uses heuristic h(n) → estimated cost to goal.<br>
+      Chooses node with minimum h(n)
+    `},
+    { title: "A* Search", formula: `
+      f(n) = g(n) + h(n)<br>
+      g(n) = cost from start to node n<br>
+      h(n) = estimated cost from n to goal<br>
+      Expands node with minimum f(n)
+    `},
+    { title: "Hill Climbing", formula: `Move to neighbor with higher evaluation.<br>Evaluation function: f(n) → higher = better`},
+    { title: "Simulated Annealing", formula: `Probability of accepting worse solution:<br>P = e^(-ΔE/T)<br>ΔE = cost difference, T = temperature`},
+    { title: "Minimax Algorithm", formula: `
+      MAX player tries to maximize utility, MIN player minimizes.<br>
+      Minimax(n) = {<br>
+        Utility(n) if terminal node,<br>
+        max(Minimax(children)) if MAX node,<br>
+        min(Minimax(children)) if MIN node<br>
+      }
+    `},
+    { title: "Alpha-Beta Pruning", formula: `
+      Optimization of Minimax using α (max lower bound) and β (min upper bound) to prune branches
+    `},
+    { title: "Backtracking (CSP)", formula: `Assign values to variables, backtrack on conflict.`},
+    { title: "Forward Checking (CSP)", formula: `Eliminates incompatible values ahead of assignment.`},
+    { title: "AC-3 Algorithm", formula: `Ensures for every edge (X,Y), each value of X has a valid Y.`},
+    { title: "Genetic Algorithm (GA)", formula: `Operators: Selection, Crossover, Mutation<br>Fitness function: f(x) → higher fitness = better`},
+    { title: "Particle Swarm Optimization (PSO)", formula: `
+      v_i := w*v_i + c1*r1*(pbest_i - x_i) + c2*r2*(gbest - x_i)<br>
+      x_i := x_i + v_i
+    `},
+    { title: "Heuristic Function", formula: `Estimate cost to goal: h(n)<br>Admissible Heuristic: never overestimates`},
+    { title: "Evaluation Function (Games)", formula: `f(n) = Score(MAX) - Score(MIN)`}
+    ],
+
+    ml: [
+         { title: "Linear Regression", formula: `
+Purpose: Predict continuous output y from x
+Equation: y = β₀ + β₁x
+Cost Function (MSE): J(β₀,β₁) = (1/n) Σ (yᵢ - (β₀ + β₁xᵢ))²
+Algorithm: Gradient Descent
+Step-by-step:
+1. Initialize β₀, β₁ randomly
+2. Compute predictions y = β₀ + β₁x
+3. Compute gradients
+4. Update β₀, β₁ until convergence
+      ` },
+      { title: "Logistic Regression", formula: `
+Purpose: Binary classification
+Sigmoid: σ(z) = 1 / (1 + e⁻ᶻ)
+Prediction: P(y=1|x) = σ(β₀ + β₁x)
+Cost (Log Loss): J(β) = -1/n Σ [yᵢ log(ŷᵢ) + (1 - yᵢ) log(1 - ŷᵢ)]
+Algorithm: Gradient descent on J(β)
+      ` },
+      { title: "Decision Tree", formula: `
+Purpose: Classification/Regression
+Entropy: H(S) = - Σ pᵢ log₂(pᵢ)
+Information Gain: IG(S,A) = H(S) - Σ (|Sᵥ|/|S|) H(Sᵥ)
+Algorithm (ID3):
+1. Calculate entropy
+2. Compute IG for all features
+3. Split on max IG feature
+4. Repeat recursively until leaves are pure
+      ` },
+      { title: "K-Nearest Neighbors (KNN)", formula: `
+Purpose: Classification using similarity
+Distance (Euclidean): d(xᵢ,xⱼ) = √Σ (xᵢₖ - xⱼₖ)²
+Algorithm:
+1. Choose k
+2. Compute distance from all training points
+3. Pick k nearest
+4. Majority vote → predicted class
+      ` },
+      { title: "Support Vector Machine (SVM)", formula: `
+Purpose: Classification with max margin
+Hyperplane: w ⋅ x + b = 0
+Objective: min (1/2) ||w||² s.t. yᵢ(w ⋅ xᵢ + b) ≥ 1
+Algorithm: Solve quadratic optimization
+      ` },
+      { title: "K-Means Clustering", formula: `
+Purpose: Unsupervised clustering into k groups
+Objective: J = Σ Σ ||x - μᵢ||²
+Algorithm:
+1. Initialize k centroids
+2. Assign points to nearest centroid
+3. Recompute centroids
+4. Repeat until convergence
+      ` },
+      { title: "Principal Component Analysis (PCA)", formula: `
+Purpose: Dimensionality reduction
+Algorithm:
+1. Compute covariance matrix C = (1/n) Xᵀ X
+2. Compute eigenvectors & eigenvalues
+3. Select top-k eigenvectors → new feature space
+      ` },
+      { title: "Naive Bayes", formula: `
+Purpose: Classification using Bayes theorem
+Posterior: P(C|X) = P(X|C) P(C) / P(X)
+Algorithm:
+1. Compute prior P(C)
+2. Compute likelihood P(X|C)
+3. Compute posterior P(C|X)
+4. Choose class with max posterior
+      ` },
+      { title: "Random Forest", formula: `
+Purpose: Ensemble of decision trees
+Algorithm:
+1. Build multiple trees on bootstrapped samples
+2. Randomly select subset of features at each split
+3. Final prediction: majority vote
+      ` },
+      { title: "Gradient Boosting", formula: `
+Purpose: Sequential ensemble to minimize residual errors
+Prediction: Fₘ(x) = Fₘ₋₁(x) + γₘ hₘ(x)
+Algorithm:
+1. Initialize F₀(x)
+2. For m = 1 to M:
+   a. Compute residuals
+   b. Fit weak learner hₘ(x)
+   c. Update Fₘ(x)
+      ` }
+    ],
+
+    dsa: [
+      { title: "Time Complexity Table", formula: `<table>
+        <tr><th>Algorithm</th><th>Worst Case</th><th>Average Case</th><th>Notes</th></tr>
+        <tr><td>Linear Search</td><td>O(n)</td><td>O(n)</td><td>Simple search</td></tr>
+        <tr><td>Binary Search</td><td>O(log n)</td><td>O(log n)</td><td>Sorted array only</td></tr>
+        <tr><td>Bubble Sort</td><td>O(n²)</td><td>O(n²)</td><td>Can be O(n) if optimized</td></tr>
+        <tr><td>Selection Sort</td><td>O(n²)</td><td>O(n²)</td><td>Always O(n²)</td></tr>
+        <tr><td>Insertion Sort</td><td>O(n²)</td><td>O(n²)</td><td>Best case O(n) if nearly sorted</td></tr>
+        <tr><td>Merge Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>Stable, divide & conquer</td></tr>
+        <tr><td>Quick Sort</td><td>O(n²)</td><td>O(n log n)</td><td>Average fast, worst depends on pivot</td></tr>
+        <tr><td>Heap Sort</td><td>O(n log n)</td><td>O(n log n)</td><td>Not stable</td></tr>
+        <tr><td>Counting Sort</td><td>O(n+k)</td><td>O(n+k)</td><td>For integers 0..k</td></tr>
+        <tr><td>Radix Sort</td><td>O(d*(n+k))</td><td>O(d*(n+k))</td><td>d = number of digits</td></tr>
+      </table>` },
+      { title: "Recurrences", formula: `
+        Merge Sort: T(n) = 2T(n/2) + O(n) ⇒ O(n log n)<br>
+        Quick Sort (average): T(n) = 2T(n/2) + O(n) ⇒ O(n log n)<br>
+        Binary Search: T(n) = T(n/2) + O(1) ⇒ O(log n)<br>
+        Factorial/Recursion: T(n) = T(n-1) + O(1) ⇒ O(n)
+      ` },
+      { title: "Graph Algorithms", formula: `<table>
+        <tr><th>Algorithm</th><th>Time Complexity</th><th>Notes</th></tr>
+        <tr><td>BFS</td><td>O(V + E)</td><td>Shortest path unweighted</td></tr>
+        <tr><td>DFS</td><td>O(V + E)</td><td>Connected components</td></tr>
+        <tr><td>Dijkstra</td><td>O((V + E) log V)</td><td>Shortest path, non-negative weights</td></tr>
+        <tr><td>Bellman-Ford</td><td>O(VE)</td><td>Handles negative weights</td></tr>
+        <tr><td>Floyd-Warshall</td><td>O(V³)</td><td>All pairs shortest path</td></tr>
+        <tr><td>Prim/Kruskal</td><td>O(E log V)</td><td>Minimum Spanning Tree</td></tr>
+      </table>` },
+      { title: "Tree & BST", formula: `
+        Height of balanced BST ≈ log₂(n+1)<br>
+        Nodes in perfect binary tree: n = 2^h - 1<br>
+        Height of complete binary tree: h ≈ log₂(n+1)
+      ` },
+      { title: "Heap", formula: `
+        Max/Min Heap height ≈ log₂(n)<br>
+        Insert/Extract: O(log n)<br>
+        Heapify: O(n) for building heap
+      ` },
+      { title: "Hashing", formula: `
+        Average search/insert/delete: O(1)<br>
+        Worst case (chaining): O(n)<br>
+        Hash function example: h(k) = k mod m
+      ` },
+      { title: "Graph Theory", formula: `
+        Edges in tree = n - 1<br>
+        Max edges in undirected graph = n(n-1)/2<br>
+        Max edges in directed graph = n(n-1)<br>
+        Connected components ≤ number of nodes
+      ` },
+      { title: "Common Data Structures", formula: `
+        Stack/Queue push/pop/enqueue/dequeue: O(1)<br>
+        Linked List insert/delete/search: O(1) head, O(n) general<br>
+        Array access: O(1), insert/delete: O(n)<br>
+        Hash Map insert/search/delete: O(1) avg
+      ` },
+      { title: "Strings & Pattern Matching", formula: `
+        KMP preprocessing (LPS array): O(m)<br>
+        KMP search: O(n + m)<br>
+        Rabin-Karp: O(n) average, O(nm) worst case
+      ` },
+      { title: "Dynamic Programming", formula: `
+        Fibonacci DP: O(n)<br>
+        0/1 Knapsack: O(n*W)<br>
+        Longest Common Subsequence: O(m*n)<br>
+        Matrix Chain Multiplication: O(n³)
+      ` }
+    ],
+
+    dbms: [
+      { title: "1. Basic Concepts", formula: `
+        DBMS: Software to store, manage, retrieve data.<br>
+        Types: Hierarchical, Network, Relational, Object-Oriented.<br>
+        Advantages: Data abstraction, independence, concurrency control, recovery, security.
+      ` },
+      { title: "2. ER Model & Keys", formula: `
+        Entities → Real-world objects.<br>
+        Attributes → Properties.<br>
+        Relationships → Associations.<br>
+        Keys:<br>
+        - Super Key: Unique identifier.<br>
+        - Candidate Key: Minimal super key.<br>
+        - Primary Key: Chosen candidate key.<br>
+        - Foreign Key: References primary key.<br>
+        - Composite Key: Multiple attributes.
+      ` },
+      { title: "3. Relational Algebra", formula: `
+        Select (σ): σcondition(R)<br>
+        Project (π): πcolumns(R)<br>
+        Union: R ∪ S<br>
+        Set Difference: R - S<br>
+        Cartesian Product: R × S<br>
+        Rename: ρ<br>
+        Join: θ-join R ⋈θ S, Natural Join R ⋈ S
+      ` },
+      { title: "4. Functional Dependencies & Normalization", formula: `
+        FD: X → Y<br>
+        Closure X⁺: All attributes functionally determined by X.<br>
+        Normal Forms:<br>
+        1NF: Atomic values.<br>
+        2NF: No partial dependency.<br>
+        3NF: No transitive dependency.<br>
+        BCNF: Determinant is candidate key.<br>
+        4NF: No multi-valued dependency.
+      ` },
+      { title: "5. SQL Basics", formula: `
+        DDL: CREATE, ALTER, DROP<br>
+        DML: SELECT, INSERT, UPDATE, DELETE<br>
+        DCL: GRANT, REVOKE<br>
+        TCL: COMMIT, ROLLBACK, SAVEPOINT<br>
+        Aggregate: COUNT, SUM, AVG, MAX, MIN<br>
+        GROUP BY / HAVING: SELECT dept, COUNT(*) FROM emp GROUP BY dept HAVING COUNT(*)>5
+      ` },
+      { title: "6. Transactions & Concurrency", formula: `
+        ACID: Atomicity, Consistency, Isolation, Durability<br>
+        Transaction States: Active → Partially Committed → Committed/Aborted<br>
+        Concurrency: 2PL locks, Deadlock detection
+      ` },
+      { title: "7. Indexing & Hashing", formula: `
+        Index: Speeds retrieval.<br>
+        Types: Single-level, Multi-level, B+ Tree.<br>
+        Hashing: h(k) = k mod m<br>
+        Search Time: Without index O(n), With B+ Tree O(log n)
+      ` },
+      { title: "8. File Organization", formula: `
+        Heap File: Unordered<br>
+        Sorted File: Ordered by key<br>
+        Clustered Index: Data physically sorted<br>
+        Unclustered Index: Pointers only
+      ` },
+      { title: "9. Important Formulas / Notations", formula: `
+        FD Closure: X⁺ = all attributes determined by X<br>
+        Serializability: Check conflicts<br>
+        B+ Tree Height: h = ⌈log_d((n+1)/2)⌉, d = degree, n = number of keys
+      ` }
+    ],
+
+    ds: [
+        { title: "Data Science Basics", formula: `
+<b>Definition:</b> Extract insights from data using statistics, ML, visualization.<br>
+<b>Key Steps:</b> Data Collection → Cleaning → EDA → Feature Engineering → Model Training → Evaluation → Deployment<br>
+<b>Types of Data:</b> Structured (tables), Unstructured (text, images, audio)
+`},
+    { title: "Data Preprocessing", formula: `
+<b>Missing Data:</b> Mean/Median imputation, drop rows/columns.<br>
+<b>Encoding:</b> Label Encoding, One-Hot Encoding<br>
+<b>Scaling:</b> Min-Max: x' = (x - x_min)/(x_max - x_min)<br>
+Z-score: z = (x - μ)/σ
+`},
+    { title: "Statistics / Probability", formula: `
+Mean: x̄ = Σxᵢ/n<br>
+Variance: σ² = Σ(xᵢ - x̄)²/n<br>
+Std Dev: σ = √σ²<br>
+Cov(X,Y) = Σ(Xᵢ - X̄)(Yᵢ - Ȳ)/n<br>
+Pearson r = Cov(X,Y)/(σ_X * σ_Y)<br>
+Bayes: P(A|B) = P(B|A)P(A)/P(B)
+`},
+    { title: "ML Algorithms", formula: `
+<b>Supervised:</b> Linear Regression: y = β₀ + β₁x<br>
+Logistic Regression: P(y=1|x) = σ(β₀ + β₁x)<br>
+Decision Tree, Random Forest, SVM, Naive Bayes<br>
+<b>Unsupervised:</b> K-Means: minimize Σ||x - μ||², PCA, Hierarchical Clustering
+`},
+    { title: "Evaluation Metrics", formula: `
+Regression: MSE, RMSE, R²<br>
+Classification: Accuracy, Precision = TP/(TP+FP), Recall = TP/(TP+FN), F1-score = 2*Precision*Recall/(Precision+Recall)<br>
+Confusion Matrix: TP, TN, FP, FN
+`},
+    { title: "Feature Selection / Dimensionality Reduction", formula: `
+PCA: Project to top-k eigenvectors<br>
+Feature Importance in Trees<br>
+Correlation Analysis: Remove highly correlated features
+`},
+    { title: "Important Formulas", formula: `
+Mean: x̄ = Σxᵢ/n<br>
+Variance: σ² = Σ(xᵢ - x̄)²/n<br>
+Std Dev: σ = √σ²<br>
+Cov(X,Y) = Σ(Xᵢ - X̄)(Yᵢ - Ȳ)/n<br>
+Pearson r = Cov(X,Y)/(σ_X * σ_Y)<br>
+Min-Max Scaling: x' = (x - x_min)/(x_max - x_min)<br>
+Z-score: z = (x - μ)/σ<br>
+MSE = Σ(yᵢ - ŷᵢ)²/n<br>
+R² = 1 - SS_res/SS_tot
+`},
+    { title: "GATE Tip", formula: `
+Focus on basic stats, probability, linear/logistic regression, KNN, decision trees, PCA, evaluation metrics.<br>
+Understand formulas + when to use them — most GATE questions are conceptual or calculation-based.
+`}
+    ],
+
+    resources: [
+      { title: "GATE Official Syllabus", formula: "Check official GATE website:https://gate2026.iitg.ac.in/index.html" }
+    ],
+  
+  };
+
+  const container = document.getElementById("formulaContainer");
+  const nav = document.getElementById("navButtons");
+  let currentPage = "home";
+
+  // Generate navigation buttons
+  pages.forEach(p => {
+    const btn = document.createElement("button");
+    btn.innerText = p.title;
+    btn.id = "btn-" + p.id;
+    btn.onclick = () => showPage(p.id);
+    nav.appendChild(btn);
+  });
+
+  function showPage(id) {
+    currentPage = id;
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    document.getElementById("btn-" + id).classList.add("active");
+
+    container.innerHTML = "";
+
+    if (id === "home") {
+      container.innerHTML = `
+        <div class="motivation">
+          <h2>🚀 Keep Going, Future Engineer!</h2>
+          <p>Every formula you learn and every problem you solve brings you one step closer to your dream score in GATE. Stay consistent, believe in yourself, and success will follow!</p>
+        </div>
+        <p style="text-align:center; font-size:1.1rem;">Welcome to GATE Formula Hub. Select a section above to see formulas.</p>
+      `;
+      return;
+    }
+
+    const list = formulas[id] || [];
+    if (list.length === 0) {
+      container.innerHTML = "<p>No formulas available for this section.</p>";
+      return;
+    }
+
+    list.forEach(f => {
+      const card = document.createElement("div");
+      card.className = "formula-card";
+      card.innerHTML = `<h3>${f.title}</h3><pre>${f.formula}</pre>`;
+      container.appendChild(card);
+    });
+  }
+
+  function searchFormulas() {
+    const query = document.getElementById("searchBox").value.toLowerCase();
+    container.innerHTML = "";
+
+    if (!query) {
+      showPage(currentPage);
+      return;
+    }
+
+    let results = [];
+    Object.keys(formulas).forEach(cat => {
+      formulas[cat].forEach(f => {
+        if (f.title.toLowerCase().includes(query) || f.formula.toLowerCase().includes(query)) {
+          results.push({ ...f, category: cat });
+        }
+      });
+    });
+
+    if (results.length === 0) {
+      container.innerHTML = "<p>No formulas found.</p>";
+      return;
+    }
+
+    results.forEach(f => {
+      const card = document.createElement("div");
+      card.className = "formula-card";
+      card.innerHTML = `<h3>${f.title} <small>(${f.category})</small></h3><pre>${f.formula}</pre>`;
+      container.appendChild(card);
+    });
+  }
+
+  // Show home page initially
+  showPage("home");
+</script>
+
+</body>
+</html>
